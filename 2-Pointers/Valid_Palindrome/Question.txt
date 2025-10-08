@@ -1,0 +1,2 @@
+Given a string determine if its a palindrome after removing all non=alphanumeric characters. 
+A character is alphanumeric if its either a letter or a number.
