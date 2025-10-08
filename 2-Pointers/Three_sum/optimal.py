@@ -1,20 +1,19 @@
 from testcases import test_cases
 
 def twopairsum(nums,target):
-    n = len(nums)
+    start,end = 0,len(nums)-1
     pairs = []
-    start,end = 0,n-1
-    while start<end:
-        curr_sum = nums[start]+nums[end]
-        if curr_sum==target:
-            pairs.append([start,end])
+    while end>start:
+        summation = nums[end]+nums[start]
+        if summation==target:
+            pairs.append((nums[start],nums[end]))
             start+=1
             end-=1
-            while start < end and nums[start] == nums[start-1]:
-                start += 1
-            while start < end and nums[end] == nums[end+1]:
-                end -= 1
-        elif curr_sum>target:
+            while end>start and nums[start]==nums[start-1]:
+                start+=1
+            while end>start and nums[end]==nums[end+1]:
+                end-=1
+        elif summation>target:
             end-=1
         else:
             start+=1
@@ -23,16 +22,16 @@ def twopairsum(nums,target):
 def three_sum_two_pointer(nums, target):
     n = len(nums)
     nums.sort()
-    unique_triplets = set()
-    for a in range(n):  
+    result = []
+    for a in range(n): 
         if a>0 and nums[a]==nums[a-1]:
             continue
-        else:
-             for b,c in twopairsum(nums[a+1:],target-nums[a]):
-                 unique_triplets.add(tuple(sorted([nums[a],nums[b+a+1],nums[c+a+1]])))
+        pairs = twopairsum(nums[a+1:], target-nums[a])
+        for b,c in pairs:
+            result.append((nums[a],b,c))
+    return result
 
-            
-    return [list(triplet) for triplet in unique_triplets]
+    
 if __name__ == "__main__":
     for idx, (nums, target, expected) in enumerate(test_cases):
         result = sorted([sorted(triplet) for triplet in three_sum_two_pointer(nums, target)])
